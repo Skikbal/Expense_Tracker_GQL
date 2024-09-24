@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import passport from "passport";
 
 const userSchema = new mongoose.Schema(
   {
@@ -22,7 +21,7 @@ const userSchema = new mongoose.Schema(
     },
     gender: {
       type: String,
-      enum: ["male", "female"],
+      enum: ["boy", "girl"],
     },
   },
   {
