@@ -13,7 +13,7 @@ import passport from "passport";
 import session from "express-session";
 import connectMongodbSession from "connect-mongodb-session";
 import { configurePassport } from "./passport/passport.config.js";
-
+import User from "./model/user.model.js";
 dotenv.config();
 configurePassport();
 const app = express();
@@ -56,7 +56,7 @@ const server = new ApolloServer({
 await server.start();
 
 app.use(
-  "/",
+  "/graphql",
   cors({
     origin: "http://localhost:3000",
     credentials: true,

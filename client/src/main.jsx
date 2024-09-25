@@ -5,11 +5,22 @@ import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import GridBackground from "./components/UI/GridBackground.jsx";
 
+//implementing graph ql client
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+
+const client = new ApolloClient({
+  uri: "http://localhost:4000/graphql",
+  cache: new InMemoryCache(),
+  credentials: "include", //this tell apollo client to send cookies along with every request to the server
+});
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
       <GridBackground>
-        <App />
+        <ApolloProvider client={client}>
+          <App />
+        </ApolloProvider>
       </GridBackground>
     </BrowserRouter>
   </StrictMode>

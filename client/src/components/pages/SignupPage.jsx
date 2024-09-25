@@ -3,6 +3,9 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import RadioButton from "../UI/RadioButton";
 import InputField from "../UI/InputField";
+import { useMutation } from "@apollo/client";
+import toast from "react-hot-toast";
+import { SIGN_UP } from "../graphql/mutation/user.mutation";
 
 const SignupPage = () => {
   const [signUpData, setSignUpData] = useState({
@@ -11,6 +14,21 @@ const SignupPage = () => {
     password: "",
     gender: "",
   });
+
+  const [signup, { loading, error }] = useMutation(SIGN_UP);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await signup({
+        variables: {
+          input: signUpData,
+        },
+      });
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value, type } = e.target;
@@ -28,10 +46,6 @@ const SignupPage = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log(signUpData);
-  };
   return (
     <div className="h-screen flex justify-center items-center">
       <div className="flex rounded-lg overflow-hidden z-50 bg-gray-300">
@@ -72,26 +86,27 @@ const SignupPage = () => {
                   id="male"
                   label="Male"
                   name="gender"
-                  value="male"
+                  value="boy"
                   onChange={handleChange}
-                  checked={signUpData.gender === "male"}
+                  checked={signUpData.gender === "boy"}
                 />
                 <RadioButton
                   id="female"
                   label="Female"
                   name="gender"
-                  value="female"
+                  value="girl"
                   onChange={handleChange}
-                  checked={signUpData.gender === "female"}
+                  checked={signUpData.gender === "girl"}
                 />
               </div>
 
               <div>
                 <button
+                  disabled={loading}
                   type="submit"
                   className="w-full bg-black text-white p-2 rounded-md hover:bg-gray-800 focus:outline-none focus:bg-black  focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Sign Up
+                  {loading ? "Loading" : "Sign Up"}
                 </button>
               </div>
             </form>

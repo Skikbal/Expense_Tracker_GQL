@@ -4,19 +4,22 @@ import LoginPage from "./components/pages/LoginPage";
 import SignupPage from "./components/pages/SignupPage";
 import NotfoundPage from "./components/pages/NotFoundPage";
 import TransactionPage from "./components/pages/TransactionPage";
-import Header from "./components/UI/Header";
+import { Toaster } from "react-hot-toast";
+import ProtectedRoutes from "./components/routes/protectedRoutes";
 function App() {
-  const authUser = true;
   return (
     <>
-      {authUser && <Header />}
       <Routes>
-        <Route index={true} path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/login" index={true} element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
-        <Route path="/transaction" element={<TransactionPage />} />
         <Route path="*" element={<NotfoundPage />} />
+
+        <Route element={<ProtectedRoutes />}>
+          <Route index={true} path="/" element={<HomePage />} />
+          <Route path="/transaction" element={<TransactionPage />} />
+        </Route>
       </Routes>
+      <Toaster />
     </>
   );
 }

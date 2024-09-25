@@ -5,7 +5,7 @@ const userResolver = {
     signUp: async (_, { input }, context) => {
       try {
         const { username, name, password, gender } = input;
-        if (!username || name || password || gender) {
+        if (!username || !name || !password || !gender) {
           throw new error("All fields are required");
         }
         const existingUser = await User.findOne({ username });
@@ -41,6 +41,9 @@ const userResolver = {
           username,
           password,
         });
+        if (!user) {
+          throw new Error("Invalid credentials");
+        }
         await context.login(user);
         return user;
       } catch (err) {
@@ -51,10 +54,10 @@ const userResolver = {
     logout: async (_, __, context) => {
       try {
         await context.logout();
-        req.session.destroy((err) => {
+        context.req.session.destroy((err) => {
           if (err) throw err;
         });
-        res.clearCookie("connect.sid");
+        context.res.clearCookie("connect.sid");
         return { message: "Logout successfully" };
       } catch (err) {
         console.log(err);
