@@ -15,8 +15,8 @@ function App() {
         <Route path="*" element={<NotfoundPage />} />
 
         <Route element={<ProtectedRoutes />}>
-          <Route index={true} path="/" element={<HomePage />} />
-          <Route path="/transaction" element={<TransactionPage />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/transaction/:id" element={<TransactionPage />} />
         </Route>
       </Routes>
       <Toaster />
