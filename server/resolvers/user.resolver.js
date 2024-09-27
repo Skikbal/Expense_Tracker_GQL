@@ -5,6 +5,7 @@ const userResolver = {
     signUp: async (_, { input }, context) => {
       try {
         const { username, name, password, gender } = input;
+
         if (!username || !name || !password || !gender) {
           throw new error("All fields are required");
         }
@@ -19,12 +20,13 @@ const userResolver = {
         const ProfilePic = `https://avatar.iran.liara.run/public/${gender}?username=${username}`;
 
         const newUser = new User({
-          username,
+          username: username,
           name,
           password: hashedPassword,
           gender,
-          ProfilePicture: ProfilePic,
+          profilePicture: ProfilePic,
         });
+        console.log(newUser);
 
         await newUser.save();
         await context.login(newUser);

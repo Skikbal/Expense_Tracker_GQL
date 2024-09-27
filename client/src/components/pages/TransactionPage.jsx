@@ -14,8 +14,12 @@ const TransactionPage = () => {
     },
   });
 
-  const [updateTransaction, { loading: updateLoading }] =
-    useMutation(UPDATE_TRANSACTION);
+  const [updateTransaction, { loading: updateLoading }] = useMutation(
+    UPDATE_TRANSACTION,
+    {
+      refetchQueries: ["GetTransactionStatistics", "GetTransactions"],
+    }
+  );
 
   console.log(data);
 

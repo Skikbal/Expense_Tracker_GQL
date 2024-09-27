@@ -19,7 +19,7 @@ import { DELETE_TRANSACTION } from "../graphql/mutation/transaction.mutation";
 const Card = ({ transaction }) => {
   const cardClass = categoryColorMap[transaction.category];
   const [deleteTransaction, { loading }] = useMutation(DELETE_TRANSACTION, {
-    refetchQueries: ["GetTransaction"],
+    refetchQueries: ["GetTransactions", "GetTransactionStatistics"],
   });
 
   const handleDelete = async (id) => {

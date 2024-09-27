@@ -37,7 +37,7 @@ const transactionResolver = {
     },
   },
   Query: {
-    transactions: async (_, __dirname, context) => {
+    transactions: async (_, __, context) => {
       try {
         if (!context.getUser()) throw new Error("Unauthorized");
         const userId = await context.getUser()._id;
@@ -53,6 +53,25 @@ const transactionResolver = {
       } catch (err) {
         throw new Error("Error getting transaction");
       }
+    },
+    categoryStatistics: async (_, __, context) => {
+      if (!context.getUser()) throw new Error("Unauthorized");
+
+      const userId = context.getUser()._id;
+      const transaction = await Transaction.find({ userId });
+      const categoryMap = {};
+
+      transaction.forEach((transaction) => {
+        if (!categoryMap[transaction.category]) {
+          categoryMap[transaction.category] = 0;
+        }
+        categoryMap[transaction.category] += transaction.amount;
+      });
+
+      return Object.entries(categoryMap).map(([category, totalAmount]) => ({
+        category,
+        totalAmount,
+      }));
     },
   },
 };

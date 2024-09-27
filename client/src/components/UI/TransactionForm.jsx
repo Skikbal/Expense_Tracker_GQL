@@ -3,7 +3,7 @@ import { CREATE_TRANSACTION } from "../graphql/mutation/transaction.mutation";
 import toast from "react-hot-toast";
 const TransactionForm = () => {
   const [createTransaction, { loading }] = useMutation(CREATE_TRANSACTION, {
-    refetchQueries: ["GetTransaction"],
+    refetchQueries: ["GetTransactions", "GetTransactionStatistics"],
   });
   const handleSubmit = async (e) => {
     e.preventDefault();

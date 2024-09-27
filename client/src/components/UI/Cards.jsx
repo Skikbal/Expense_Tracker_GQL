@@ -4,6 +4,7 @@ import { GET_TRANSACTIONS } from "../graphql/queries/transaction.query";
 
 const Cards = () => {
   const { data, loading } = useQuery(GET_TRANSACTIONS);
+  console.log(data);
 
   return (
     <div className="w-full px-10 min-h-[40vh]">
@@ -14,7 +15,7 @@ const Cards = () => {
             return <Card key={transaction._id} transaction={transaction} />;
           })}
       </div>
-      {!loading && data?.transaction?.length === 0 && (
+      {!loading && data?.transactions?.length === 0 && (
         <p className="text-2xl font-bold text-center w-full">
           No trnsaction history
         </p>
