@@ -3,6 +3,7 @@ import mergedResolvers from "./resolvers/index.js";
 import mergedTypeDefs from "./typeDefs/index.js";
 import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
+import path from "path";
 import express from "express";
 import http from "http";
 import cors from "cors";
@@ -16,7 +17,9 @@ import { configurePassport } from "./passport/passport.config.js";
 import User from "./model/user.model.js";
 dotenv.config();
 configurePassport();
+
 const app = express();
+const __dirname = path.resolve();
 
 // enabling our servers to shut down gracefully.
 const httpServer = http.createServer(app);
@@ -68,6 +71,14 @@ app.use(
     context: ({ req, res }) => buildContext({ req, res, User }),
   })
 );
+
+//npm run build will build my frontend app, and it will be the optimized versuion of my application
+
+app.use(express.static(path.join(__dirname, "client/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client/dist", "index.html"));
+});
 
 // Modified server startup
 await new Promise((resolve) => httpServer.listen({ port: 4000 }, resolve));
