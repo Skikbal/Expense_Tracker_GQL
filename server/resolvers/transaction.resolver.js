@@ -1,4 +1,5 @@
 import Transaction from "../model/transaction.model.js";
+import User from "../model/user.model.js";
 const transactionResolver = {
   Mutation: {
     createTransaction: async (_, { input }, context) => {
@@ -72,6 +73,18 @@ const transactionResolver = {
         category,
         totalAmount,
       }));
+    },
+  },
+  Transaction: {
+    user: async (parent) => {
+      const userId = parent.userId;
+
+      try {
+        const user = await User.findById(userId);
+        return user;
+      } catch (err) {
+        throw new Error(err.message);
+      }
     },
   },
 };

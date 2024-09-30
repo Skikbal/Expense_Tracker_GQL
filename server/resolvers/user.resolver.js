@@ -1,5 +1,7 @@
 import bcrypt from "bcryptjs";
 import User from "../model/user.model.js";
+import Transaction from "../model/transaction.model.js";
+
 const userResolver = {
   Mutation: {
     signUp: async (_, { input }, context) => {
@@ -84,6 +86,16 @@ const userResolver = {
       } catch (err) {
         console.error("Error in authUser:", err);
         throw new Error(err.message || "Internal server Error");
+      }
+    },
+  },
+  User: {
+    transactions: async (parent, _, __) => {
+      try {
+        const transaction = await Transaction.find({ userId: parent._id });
+        return transaction;
+      } catch (err) {
+        throw new Error(err.message);
       }
     },
   },

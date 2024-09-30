@@ -10,3 +10,17 @@ export const GET_AUTHENTICATED_USER = gql`
     }
   }
 `;
+
+export const GET_USERAND_TRANSACTION = gql`
+  query GetUserAndTransactions($userId: ID!) {
+    user(userId: $userId) {
+      _id
+      name
+      username
+      transactions {
+        _id
+        amount
+      }
+    }
+  }
+`;
